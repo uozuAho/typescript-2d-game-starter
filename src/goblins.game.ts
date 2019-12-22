@@ -1,6 +1,6 @@
-import backgroundImg from './background.png';
-import heroImg from './hero.png';
-import monsterImg from './monster.png';
+import backgroundImg from './img/background.png';
+import heroImg from './img/hero.png';
+import monsterImg from './img/monster.png';
 
 export function runGoblinsGame() {
     const keysDown = {
