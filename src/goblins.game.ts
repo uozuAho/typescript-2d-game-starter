@@ -2,13 +2,29 @@ import backgroundImg from './img/background.png';
 import heroImg from './img/hero.png';
 import monsterImg from './img/monster.png';
 
+class Point2d {
+    constructor(public x: number, public y: number) {}
+}
+
 class Hero {
-    private _x: number;
-    private _y: number;
+    public position = new Point2d(0, 0);
+
+    private _speed = 256; //px/sec
     private _image: HTMLImageElement;
     private _assetsLoaded = false;
 
-    constructor(private _imgPath: string) {}
+    constructor() {}
+
+    public setPosition(position: Point2d) {
+        this.position = position;
+    }
+
+    update(keysDown: { up: boolean; down: boolean; left: boolean; right: boolean; }, elapsed: number) {
+        if (keysDown.up)    { this.position.y -= this._speed * elapsed; }
+        if (keysDown.down)  { this.position.y += this._speed * elapsed; }
+        if (keysDown.left)  { this.position.x -= this._speed * elapsed; }
+        if (keysDown.right) { this.position.x += this._speed * elapsed; }
+    }
 
     public loadAssets() {
         this._image = new Image();
@@ -19,7 +35,9 @@ class Hero {
     }
 
     public draw(ctx: CanvasRenderingContext2D) {
-        ctx.drawImage(this._image, this._x, this._y);
+        if (this._assetsLoaded) {
+            ctx.drawImage(this._image, this.position.x, this.position.y);
+        }
     }
 }
 
@@ -45,6 +63,9 @@ export function runGoblinsGame() {
         bgReady = true;
     };
     bgImage.src = backgroundImg;
+
+    const hero2 = new Hero();
+    hero2.loadAssets();
 
     var heroReady = false;
     var heroImage = new Image();
@@ -100,16 +121,7 @@ export function runGoblinsGame() {
 
     // Reset the game when the player catches a monster
     var reset = function () {
-        hero.x = canvas.width / 2;
-        hero.y = canvas.height / 2;
-
-        // Throw the monster somewhere on the screen randomly
-        monster.x = 32 + (Math.random() * (canvas.width - 64));
-        monster.y = 32 + (Math.random() * (canvas.height - 64));
-    };
-
-    // Reset the game when the player catches a monster
-    var reset = function () {
+        hero2.setPosition(new Point2d(canvas.width / 2, canvas.height / 2));
         hero.x = canvas.width / 2;
         hero.y = canvas.height / 2;
 
@@ -120,17 +132,14 @@ export function runGoblinsGame() {
 
     // Update game objects
     var update = function (elapsed: number) {
-        if (keysDown.up)    { hero.y -= hero.speed * elapsed; }
-        if (keysDown.down)  { hero.y += hero.speed * elapsed; }
-        if (keysDown.left)  { hero.x -= hero.speed * elapsed; }
-        if (keysDown.right) { hero.x += hero.speed * elapsed; }
+        hero2.update(keysDown, elapsed);
 
         // Are they touching?
         if (
-            hero.x <= (monster.x + 32)
-            && monster.x <= (hero.x + 32)
-            && hero.y <= (monster.y + 32)
-            && monster.y <= (hero.y + 32)
+            hero2.position.x <= (monster.x + 32)
+            && monster.x <= (hero2.position.x + 32)
+            && hero2.position.y <= (monster.y + 32)
+            && monster.y <= (hero2.position.y + 32)
         ) {
             ++monstersCaught;
             reset();
@@ -143,9 +152,7 @@ export function runGoblinsGame() {
             ctx.drawImage(bgImage, 0, 0);
         }
 
-        if (heroReady) {
-            ctx.drawImage(heroImage, hero.x, hero.y);
-        }
+        hero2.draw(ctx);
 
         if (monsterReady) {
             ctx.drawImage(monsterImage, monster.x, monster.y);
