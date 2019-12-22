@@ -2,6 +2,27 @@ import backgroundImg from './img/background.png';
 import heroImg from './img/hero.png';
 import monsterImg from './img/monster.png';
 
+class Hero {
+    private _x: number;
+    private _y: number;
+    private _image: HTMLImageElement;
+    private _assetsLoaded = false;
+
+    constructor(private _imgPath: string) {}
+
+    public loadAssets() {
+        this._image = new Image();
+        this._image.onload = () => {
+            this._assetsLoaded = true;
+        };
+        this._image.src = heroImg;
+    }
+
+    public draw(ctx: CanvasRenderingContext2D) {
+        ctx.drawImage(this._image, this._x, this._y);
+    }
+}
+
 export function runGoblinsGame() {
     const keysDown = {
         up: false,
