@@ -42,6 +42,7 @@ export class PlatformerGame {
 
     private render() {
         const ctx = this.canvas.getContext('2d');
+        ctx.clearRect(0, 0, 640, 480);
         this.hero.draw(ctx);
     };
 
@@ -95,6 +96,7 @@ class PlatformerHero {
     public update(keysDown: { up: boolean; down: boolean; left: boolean; right: boolean; }, elapsed: number) {
         if (keysDown.left)  { this.position.x -= this._speed * elapsed; }
         if (keysDown.right) { this.position.x += this._speed * elapsed; }
+        this.fall();
     }
 
     public loadAssets() {
@@ -112,8 +114,8 @@ class PlatformerHero {
     }
 
     private fall() {
-        if (this.position.y > 450) {
-            this.position.y -= 2;
+        if (this.position.y < 450) {
+            this.position.y += 10;
         }
     }
 }
