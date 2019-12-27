@@ -29,16 +29,14 @@
     "@babel/preset-env": "^7.4.1",
     "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^24.0.24",
-    "@types/node": "7.0.0",
-    "awesome-typescript-loader": "5.2.0",
+    "@types/node": "^13.1.1",
+    "awesome-typescript-loader": "^5.2.0",
     "file-loader": "^5.0.2",
     "jest": "^24.9.0",
-    "source-map-loader": "0.2.3",
-    "tslint": "5.17.0",
-    "tslint-loader": "3.6.0",
-    "typescript": "3.5.1",
+    "source-map-loader": "^0.2.3",
+    "typescript": "^3.5.1",
     "webpack": "^4.41.4",
-    "webpack-cli": "3.0.8",
+    "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.10.1"
   }
 }
