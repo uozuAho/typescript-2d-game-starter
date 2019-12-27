@@ -1,3 +1,5 @@
 import { runGoblinsGame } from './goblins.game';
+import { PlatformerGame } from './platformer';
 
-runGoblinsGame();
+// runGoblinsGame();
+new PlatformerGame().run();
